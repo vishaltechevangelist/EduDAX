@@ -1,0 +1,7 @@
+dotenv
+pymupdf
+torch
+sentence-transformers
+chromadb
+langchain-text-splitters
+tqdm
