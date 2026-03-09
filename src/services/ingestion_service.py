@@ -7,4 +7,8 @@ class IngestionService:
         self.vector_store = vector_store
         
     def ingest(self, pdf_path:str):
-        return self.pdf_loader.load(pdf_path=pdf_path)
+        pages = self.pdf_loader.load(pdf_path=pdf_path)
+
+        chunks = self.chunker.chunk(pages)
+        
+        return chunks

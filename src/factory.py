@@ -3,6 +3,7 @@ from src.adapters.vectors.chroma_store import ChromaStore
 from src.engines.embedding_engine import EmbeddingEngine
 from src.ingestion.pdf_loader import PDFLoader
 from src.ingestion.chunker import Chunker
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 class EduFactory:
     _instance = None
@@ -13,6 +14,7 @@ class EduFactory:
 
             cls._instance._pdf_loader = None
             cls._instance._chunker = None
+            cls._text_splitter = None
             cls._instance._embedding_engine = None
             cls._instance._vector_store = None
             cls._instance._ingestion_service = None
@@ -41,8 +43,13 @@ class EduFactory:
     
     def get_chunker(self):
         if self._chunker is None:
-            self._chunker = Chunker()
+            self._chunker = Chunker(self.get_text_splitter())
         return self._chunker
+    
+    def get_text_splitter(self):
+        if self._text_splitter is None:
+            self._text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
+        return self._text_splitter
 
     def get_ingestion_service(self):
         pdf_loader = self.get_pdf_loader()
