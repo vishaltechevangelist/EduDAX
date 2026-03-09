@@ -10,5 +10,7 @@ class IngestionService:
         pages = self.pdf_loader.load(pdf_path=pdf_path)
 
         chunks = self.chunker.chunk(pages)
+
+        texts = [chunk["text"] for chunk in chunks]
         
-        return chunks
+        return self.embedding_engine.embed(texts)
