@@ -67,7 +67,7 @@ client = chromadb.Client(
     chromadb.config.Settings(
         persist_directory=CHROMA_PATH
     )
-)
+) 
 
 collection = client.get_or_create_collection(COLLECTION_NAME)
 
@@ -95,7 +95,7 @@ def ingest():
                 "source": "NCERT"
             }]
         )
-
+    client.persist()
     print("Ingestion completed")
 
 
