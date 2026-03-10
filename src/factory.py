@@ -8,6 +8,14 @@ from src.adapters.vectors.chroma_store import ChromaStore
 from src.repositories.vector_repositories import VectorRepository
 import chromadb
 
+from src.pipeline.question_generation_pipeline import QuestionGenerationPipeline
+from src.services.query_service import QueryService
+from src.retrievers.retriever import Retriever
+from src.engines.embedding_engine import EmbeddingEngine
+from src.adapters.llm.ollama_client import OllamaClient
+from src.adapters.llm.prompt_builder import PromptBuilder
+
+
 class EduFactory:
     _instance = None
 
@@ -24,6 +32,11 @@ class EduFactory:
             cls._instance._sentence_transformer = None
             cls._instance._vector_repository = None
             cls._instance._vector_store = None
+            cls._instance._query_service = None
+            cls._instance._question_generation_pipeline = None
+            cls._instance._retriever = None
+            cls._instance._llm_client = None
+            cls._instance._prompt_builder = None
 
         return cls._instance
     
@@ -70,5 +83,30 @@ class EduFactory:
         embedding_engine = self.get_embedding_engine()
         vector_repository = self.get_vector_repository()
         return IngestionService(pdf_loader, chunker, embedding_engine, vector_repository)
+
+    def get_retriever(self):
+        if self._retriever is None:
+            self._retriever = Retriever(self.get_embedding_engine(), self.get_vector_repository())
+        return self._retriever
+    
+    def get_llm_client(self):
+        if self._llm_client is None:
+            self._llm_client = OllamaClient()
+        return self._llm_client
+
+    def get_prompt_builder(self):
+        if self._prompt_builder is None:
+            self._prompt_builder = PromptBuilder()
+        return self._prompt_builder
+
+    def get_question_generation_pipeline(self):
+        if self._question_generation_pipeline is None:
+            self._question_generation_pipeline = QuestionGenerationPipeline(self.get_retriever(), self.get_prompt_builder(), self.get_llm_client())
+        return self._question_generation_pipeline
+
+    def get_query_service(self):
+        if self._query_service is None:
+            self._query_service = QueryService(self.get_question_generation_pipeline())
+        return self._query_service
         
 factory = EduFactory()

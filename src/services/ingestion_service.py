@@ -6,7 +6,7 @@ class IngestionService:
         self.embedding_engine = embedding_engine
         self.vector_repositories = vector_repositories
         
-    def ingest(self, pdf_path:str):
+    def ingest(self, pdf_path:str, metadata:dict):
         pages = self.pdf_loader.load(pdf_path=pdf_path)
 
         chunks = self.chunker.chunk(pages)
@@ -15,4 +15,4 @@ class IngestionService:
         
         embeddings = self.embedding_engine.embed(texts)
 
-        return self.vector_repositories.save_chunks(chunks, embeddings)
+        return self.vector_repositories.save_chunks(chunks, embeddings, metadata)
