@@ -12,6 +12,10 @@ class QuestionGenerationPipeline:
         }
         results = self.retriever.retrieve(filters)
         # print(chunks)
-        prompt = self.prompt_builder.build(results['documents'], request)
+        if request.question_type == 'mcq':
+            prompt = self.prompt_builder.build_mcq_questions(results['documents'], request)
+        else:
+            prompt = self.prompt_builder.build_subjective_questions(results['documents'], request)
         response = self.llm.generate(prompt)
+
         return response

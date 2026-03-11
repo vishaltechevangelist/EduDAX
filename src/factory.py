@@ -13,7 +13,7 @@ from src.services.query_service import QueryService
 from src.retrievers.retriever import Retriever
 from src.engines.embedding_engine import EmbeddingEngine
 from src.adapters.llm.ollama_client import OllamaClient
-from src.adapters.llm.prompt_builder import PromptBuilder
+from src.engines.prompt_builder import PromptBuilder
 
 
 class EduFactory:
