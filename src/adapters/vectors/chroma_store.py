@@ -27,6 +27,7 @@ class ChromaStore(BaseVectorStore):
         return results
     
     def debug_chroma(self):
+        print(self.collection.peek())
         results = self.collection.get(where={
                             "$and": [
                                 {"class_name": "class9"},

@@ -3,14 +3,17 @@ import fitz
 class PDFLoader:
     def load(self, pdf_path: str):
         doc = fitz.open(pdf_path)
+        return "\n\n".join(
+            page.get_text()
+            for page in doc
+        )
+        # pages = []
 
-        pages = []
+        # for page_number, page in enumerate(doc, start=1):
+        #     text = page.get_text()
+        #     pages.append({
+        #         "page":page_number,
+        #         "text": text
+        #     })
 
-        for page_number, page in enumerate(doc, start=1):
-            text = page.get_text()
-            pages.append({
-                "page":page_number,
-                "text": text
-            })
-
-        return pages
+        # return pages

@@ -3,7 +3,6 @@ from src.api.schema import QueryRequest
 from src.factory import factory
 import json
 
-
 router = APIRouter()
 
 @router.post("/generate-questions")

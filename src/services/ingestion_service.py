@@ -7,9 +7,9 @@ class IngestionService:
         self.vector_repositories = vector_repositories
         
     def ingest(self, pdf_path:str, metadata:dict):
-        pages = self.pdf_loader.load(pdf_path=pdf_path)
+        text = self.pdf_loader.load(pdf_path=pdf_path)
 
-        chunks = self.chunker.chunk(pages)
+        chunks = self.chunker.chunk(text)
 
         texts = [chunk["text"] for chunk in chunks]
         

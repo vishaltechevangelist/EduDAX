@@ -10,7 +10,8 @@ class VectorRepository:
         for i, chunk in enumerate(chunks):
             ids.append(f"{metadata['class_name']}_{metadata['subject']}_{metadata['chapter']}_chunk_{i}")
             texts.append(chunk["text"])
-            metadata["page"] = chunk["page"]
+            metadata["topic"] = chunk["topic"]
+            metadata["subtopic"] = chunk["subtopic"]
             metadata_list.append(metadata)
 
         return self.vector_store.add_documents(ids=ids, texts=texts, embeddings=embeddings, metadata=metadata_list)
